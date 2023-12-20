@@ -1,0 +1,10 @@
+{
+  "name": "get-secret-lambda",
+  "version": "1.0.0",
+  "description": "Lambdas to retrieve secret value from secrets manager using Lambda extension",
+  "private": true,
+  "license": "MIT",
+  "dev-dependencies": {
+    "aws-sdk": "*"
+  }
+}
