@@ -1,7 +1,8 @@
-import { Stack, Construct, StackProps } from '@aws-cdk/core';
-import { CfnServer, CfnUser } from '@aws-cdk/aws-transfer';
-import { Role, PolicyStatement, ServicePrincipal } from '@aws-cdk/aws-iam';
-import { Bucket } from '@aws-cdk/aws-s3';
+import { Stack, StackProps } from 'aws-cdk-lib/core';
+import { Construct } from 'constructs';
+import { CfnServer, CfnUser } from 'aws-cdk-lib/aws-transfer';
+import { Role, PolicyStatement, ServicePrincipal, ManagedPolicy } from 'aws-cdk-lib/aws-iam';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 import { conf } from './options';
 
@@ -15,16 +16,7 @@ export class sftpStack extends Stack {
       description: 'logging role for SFTP server'
     });
 
-    loggingRole.addToPrincipalPolicy(new PolicyStatement({
-      sid: 'Logs',
-      actions: [
-        'logs:CreateLogStream',
-        'logs:DescribeLogStreams',
-        'logs:CreateLogGroup',
-        'logs:PutLogEvents',
-      ],
-      resources: ['*'],
-    }));
+    loggingRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName("service-role/AWSTransferLoggingAccess"));
 
    const sftpServer = new CfnServer(this, 'sftpServer', {
      domain: 'S3',
